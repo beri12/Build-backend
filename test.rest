@@ -1,0 +1,10 @@
+### TEST GET / WEBSITE
+
+GET http://localhost:8000
+
+### TEST GET /dashboard WEBSITE
+GET http://localhost:8000/dashboard
+
+
+### DATA ENDPOINT
+GET http://localhost:8000/api/data
