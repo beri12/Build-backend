@@ -5,9 +5,10 @@ const express = require('express');
 const app =  express()
 const PORT = 8000
 
-let data = {
-    name: "beriso"
-}
+let data = ['beriso']
+
+// Middleware 
+app.use(express.json())
 
 
 //HTTP VERBS(Methods) && Routes (or paths)
@@ -17,13 +18,28 @@ let data = {
 //  Type-1 Website endpoints (these endpoints are for sending back html and they typically 
     //  come when a user enters a url in a browser)
 app.get('/', (req, res) => {
-  res.send('<h1>homepage</h1>')
+    console.log('User requested the home page website')
+  res.send(`
+    <body
+    style="background:pink;
+    color: blue;">
+    <h1>DATA:</h1>
+    <p>${JSON.stringify(data)}</p>
+    <a href="/dashboard">Dashboard</a>
+    </body>
+    <script>console.log('This is my script')</script>
+    `)
+   
 
 })
 
 app.get('/dashboard', (req, res) => {
 
-    res.send('<h1>dashboard</h1>');
+    res.send(`
+        <body>
+        <h1>dashboard</h1>
+        <a href="/">home</a>
+        </body>`);
 
 });
 
@@ -32,9 +48,27 @@ app.get('/dashboard', (req, res) => {
 
 // Type -2  API endpoints (non-visual)
 
+// method-CRUD create-post read get update-put and delete delete
+
 app.get('/api/data', (req, res) => {
     console.log('This one was for data');
-    res.send(data);
+    res.status(599).send(data);
+})
+
+app.post('/api/data', (req, res) => {
+    // Someone wants to create a user ( for example when they cliock signupbutton)
+    // the user clicks the sign up button after entering thier credentials, and
+    // their browser is wired up to send  out a network request to the server to handle that action
+    const newEntry = req.body
+    console.log(newEntry)
+    data.push(newEntry.name)
+    res.sendStatus(201);
+})
+
+app.delete('/api/data', (req, res) => {
+    data.pop()
+    console.log('We deleted the element off the end of array')
+    res.sendStatus(203)
 })
 
 
